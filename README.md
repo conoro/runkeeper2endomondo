@@ -6,7 +6,9 @@ Description
 -----------
 This tool takes all of the unzipped GPX files from a RunKeeper export and concatenates them into one large GPX file which can be imported into Endomondo.
 
-There are two versions - [1] a simple Python cli script which you run from the directory with the GPX files and [2] a simple WIndows Python GUI which you can run from anywhere
+There are two versions - [1] a simple Python cli script which you run from the directory with the GPX files and [2] a simple Windows Python GUI which you can run from anywhere.
+
+More details over on http://conoroneill.net/a-simple-tool-to-bulk-import-your-runkeeper-data-into-endomondo/
 
 Exporting from RunKeeper
 ------------------------
