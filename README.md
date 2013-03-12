@@ -18,18 +18,7 @@ Exporting from RunKeeper
     * When you get the ZIP file from RunKeeper, unzip it into its own directory
 	* You should now have a directory containing a bunch of GPX files
 
-Python CLI Version for Developers
----------------------------------
-* Install the following: 
-    * Python 2.7 (I use 32-bit Activestate Python on 64-bit Windows 8)
-	* BeautifulSoup
-* Put runkeeper2endomondo.py in the same directory as the GPX files
-* Open a command prompt
-* python runkeeper2endomondo.py
-* It outputs endomondo.gpx in the same directory
-* It lacks even basic checks so make sure to remove endomondo.gpx from the directory before running again. The GUI version has some better checks.
-
-
+	
 Python Windows Version for End-Users
 ------------------------------------
 * You convert to Endomondo as follows:
@@ -42,7 +31,6 @@ Python Windows Version for End-Users
     * I've read that Endomodo craps-out on files over 10MB, so if the endomondo.gpx file is bigger than that, you'll have to do this process in batches with sub-sets of the RK files. As a guide, my 47 GPX files including several half marathons and a full marathon come in at 4MB.
 * The code has a few path dependencies on Windows but it should be trivial to change it to work on OS X and Linux. 
 
-
 Importing into Endomondo
 ------------------------
 * You import into Endomondo as follows:
@@ -51,6 +39,19 @@ Importing into Endomondo
 	* Point it to the endomondo.gpx file
     * Endomondo will appear to hang when you do the import. Leave it running and then open another browser tab and check your activity history. When it is fully populated with the imported activities, you can then safely close the original browser tab.
 	* That's it, you're done
+
+	
+Python CLI Version for Developers
+---------------------------------
+* Install the following: 
+    * Python 2.7 (I use 32-bit Activestate Python on 64-bit Windows 8)
+	* BeautifulSoup
+* Put runkeeper2endomondo.py in the same directory as the GPX files
+* Open a command prompt
+* python runkeeper2endomondo.py
+* It outputs endomondo.gpx in the same directory
+* It lacks even basic checks so make sure to remove endomondo.gpx from the directory before running again. The GUI version has some better checks.
+
 
 Python Windows Version for Developers
 ------------------------------------
