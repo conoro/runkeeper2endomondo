@@ -23,7 +23,8 @@ Python Windows Version for End-Users
 ------------------------------------
 * You convert to Endomondo as follows:
     * This is a Windows Executable. You don't know me from Adam. Please run a virus checker on it after you download.
-    * Run runkeeper2endomondogui.exe	
+    * Run runkeeper2endomondogui.exe
+    * If Windows 8 gives you a protection warning, click "More Info" and then "Run Anyway"	
 	* Use the File menu to select the directory with all of your RK GPX files
     * Currently the import only does GPX files. So it is missing any manually entered treadmill runs etc.
     * The code is very rough and may show "not responding" as it grinds through larger files. It tells you what it is doing in the main window so just be a bit patient, particularly if you have an older PC.
