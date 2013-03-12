@@ -1,6 +1,6 @@
 Runkeeper2Endomondo
 -------------------
-Import RunKeeper GPX files into Endomondo 
+Bulk import RunKeeper GPX files into Endomondo 
 
 Description
 -----------
