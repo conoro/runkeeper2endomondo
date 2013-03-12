@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-Portions Copyright Conor O'Neill, cwjoneill@gmail.com, http://conoroneill.net, 2013
+runkeeper2endomondogui.py
+Portions Copyright Conor O'Neill 2013, cwjoneill@gmail.com - See http://conoroneill.net
 Portions Copyright Jan Bodnar 2011 - See http://zetcode.com/gui/pysidetutorial/dialogs/
 Portions Copyright (c) 2012, Urban Skudnik <urban.skudnik@gmail.com> - See https://github.com/uskudnik/gpxjoin
 

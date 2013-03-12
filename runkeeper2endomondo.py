@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-gpxjoin.py
+runkeeper2endomondo.py
 
 Licensed under MIT License.
-Portions of code is Copyright (c) 2013, Conor O'Neill <cwjoneill@gmail.com>
-Most of code is Copyright (c) 2012, Urban Skudnik <urban.skudnik@gmail.com>
+Portions Copyright (c) 2013, Conor O'Neill <cwjoneill@gmail.com> - See http://conoroneill.net
+Portions Copyright (c) 2012, Urban Skudnik <urban.skudnik@gmail.com> - See https://github.com/uskudnik/gpxjoin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
