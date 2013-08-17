@@ -23,6 +23,7 @@ import glob
 import os.path
 
 gpx_time_format = "%Y-%m-%dT%H:%M:%SZ"
+sportstracker_time_format = "%Y-%m-%dT%H:%M:%S"
 
 class Runkeeper2Endomondo(QtGui.QMainWindow):
     
@@ -82,7 +83,14 @@ class Runkeeper2Endomondo(QtGui.QMainWindow):
                     filecontent = ffile.read()
                     xml = BeautifulStoneSoup(filecontent)
                     trkstart = xml.find("trk").find("time").string
-                    starttime = datetime.datetime.strptime(trkstart, gpx_time_format)
+                    try:
+                        starttime = datetime.datetime.strptime(trkstart, gpx_time_format)
+                    except ValueError:
+                        # This deals with Sports Tracker files which have a silly time format
+                        index = trkstart.find('.')
+                        timepart = trkstart[0:index-1]
+                        starttime = datetime.datetime.strptime(timepart, sportstracker_time_format)
+
                     files += [[starttime, filecontent]]
             
             ffiles = sorted(files, key=lambda *d: d[0]) 

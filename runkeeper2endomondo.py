@@ -19,43 +19,50 @@ import datetime
 import glob
 
 gpx_time_format = "%Y-%m-%dT%H:%M:%SZ"
+sportstracker_time_format = "%Y-%m-%dT%H:%M:%S"
 
 def main():
 
-	files = list()
-	
-	all_gpx_files = glob.glob('./*.gpx')
-	
-	# To make sure our data files are attached in correct order; we don't trust file system (download order, ...)
-	for ffile in all_gpx_files:
-		ffile = open(ffile, "r")
-		filecontent = ffile.read()
-		xml = BeautifulStoneSoup(filecontent)
-		trkstart = xml.find("trk").find("time").string
-		starttime = datetime.datetime.strptime(trkstart, gpx_time_format)
-		files += [[starttime, filecontent]]
-	
-	ffiles = sorted(files, key=lambda *d: d[0]) 
-	
-	# GPX end tag is unnecessary from initial file
-	joined_gpx = ffiles[0][1].split("</gpx>")[0]
-	
-	# "Header" data (initial xml tag, gpx tag, metadata, etc.) is unnecessary
-	# in subsequent file, therefore we remove it, along with end GPX tag.
-	for date, ffile in ffiles[1:]:
-		header, content = ffile.split("<trk>")
-		content = "<trk>" + content
-		joined_gpx += content.split("</gpx>")[0]
-	
-	# Processed all files, append end GPX tag
-	joined_gpx += "</gpx>"
-	
-	# Write out concatenated file
-	output_filename = "endomondo.gpx"
-	output_gpx = file(output_filename, "w")
-	output_gpx.write(joined_gpx)
-	output_gpx.close()
-	
+    files = list()
+    
+    all_gpx_files = glob.glob('./*.gpx')
+    
+    # To make sure our data files are attached in correct order; we don't trust file system (download order, ...)
+    for ffile in all_gpx_files:
+        ffile = open(ffile, "r")
+        filecontent = ffile.read()
+        xml = BeautifulStoneSoup(filecontent)
+        trkstart = xml.find("trk").find("time").string
+        try:
+            starttime = datetime.datetime.strptime(trkstart, gpx_time_format)
+        except ValueError:
+        	# This deals with Sports Tracker files which have a silly time format
+            index = trkstart.find('.')
+            timepart = trkstart[0:index-1]
+            starttime = datetime.datetime.strptime(timepart, sportstracker_time_format)
+        files += [[starttime, filecontent]]
+    
+    ffiles = sorted(files, key=lambda *d: d[0]) 
+    
+    # GPX end tag is unnecessary from initial file
+    joined_gpx = ffiles[0][1].split("</gpx>")[0]
+    
+    # "Header" data (initial xml tag, gpx tag, metadata, etc.) is unnecessary
+    # in subsequent file, therefore we remove it, along with end GPX tag.
+    for date, ffile in ffiles[1:]:
+        header, content = ffile.split("<trk>")
+        content = "<trk>" + content
+        joined_gpx += content.split("</gpx>")[0]
+    
+    # Processed all files, append end GPX tag
+    joined_gpx += "</gpx>"
+    
+    # Write out concatenated file
+    output_filename = "endomondo.gpx"
+    output_gpx = file(output_filename, "w")
+    output_gpx.write(joined_gpx)
+    output_gpx.close()
+    
 if __name__ == '__main__':
-	main()
+    main()
 
