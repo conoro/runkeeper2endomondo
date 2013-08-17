@@ -80,4 +80,4 @@ First rough version. Tested on 47 RunKeeper GPX files including several Half Mar
 
 2013/08/17
 ----------
-Tiny change to work with the Sports Tracker timestamp format. Seems to work on sample files provided by a kind reader of myu blog. Would love to hear more confirmation.
+Tiny change to work with the Sports Tracker timestamp format. Seems to work on sample files provided by a kind reader of my blog. Would love to hear more confirmation.
