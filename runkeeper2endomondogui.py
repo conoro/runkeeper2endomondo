@@ -88,9 +88,13 @@ class Runkeeper2Endomondo(QtGui.QMainWindow):
                     except ValueError:
                         # This deals with Sports Tracker files which have a silly time format
                         index = trkstart.find('.')
-                        timepart = trkstart[0:index-1]
-                        starttime = datetime.datetime.strptime(timepart, sportstracker_time_format)
-
+                        try:
+                            timepart = trkstart[0:index-1]
+                            starttime = datetime.datetime.strptime(timepart, sportstracker_time_format)
+                        except ValueError:
+                            # A user has submitted yet another Sports Tracker time format    
+                            timepart = trkstart[0:index]
+                            starttime = datetime.datetime.strptime(timepart, sportstracker_time_format)
                     files += [[starttime, filecontent]]
             
             ffiles = sorted(files, key=lambda *d: d[0]) 
