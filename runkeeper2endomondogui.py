@@ -83,7 +83,12 @@ class Runkeeper2Endomondo(QtGui.QMainWindow):
                     ffile = open(ffile, "r")
                     filecontent = ffile.read()
                     xml = BeautifulStoneSoup(filecontent)
-                    trkstart = xml.find("trk").find("time").string
+                    tracktime = xml.find("trk")
+                    try:
+                        trkstart= tracktime.find("time").string
+                    except AttributeError:
+                        # Skip file if track is empty. i.e. manual added workout - no gps data
+                        continue
                     try:
                         starttime = datetime.datetime.strptime(trkstart, gpx_time_format)
                     except ValueError:
