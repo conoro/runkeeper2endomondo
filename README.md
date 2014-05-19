@@ -55,7 +55,6 @@ Python CLI Version for Developers
 * Open a command prompt
 * python runkeeper2endomondo.py
 * It outputs endomondo.gpx in the same directory
-* It lacks even basic checks so make sure to remove endomondo.gpx from the directory before running again. The GUI version has some better checks.
 
 
 Python Windows Version for Developers

@@ -74,7 +74,7 @@ class Runkeeper2Endomondo(QtGui.QMainWindow):
             self.textEdit.setText(message)
             self.textEdit.repaint()
             for ffile in all_gpx_files:
-                if ("endomondo.gpx" not in ffile):
+                if ("endomondo" not in ffile):
                     message = message + ffile + "\n"
                     self.textEdit.setText(message)
                     self.textEdit.moveCursor(QtGui.QTextCursor.End)

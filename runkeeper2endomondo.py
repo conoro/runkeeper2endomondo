@@ -29,26 +29,27 @@ def main():
     
     # To make sure our data files are attached in correct order; we don't trust file system (download order, ...)
     for ffile in all_gpx_files:
-        ffile = open(ffile, "r")
-        filecontent = ffile.read()
-        xml = BeautifulStoneSoup(filecontent)
-        trkstart = xml.find("trk").find("time").string
-        try:
-            starttime = datetime.datetime.strptime(trkstart, gpx_time_format)
-        except ValueError:
-        	# This deals with Sports Tracker files which have a silly time format
-            index = trkstart.find('.')
+        if ("endomondo" not in ffile):
+            ffile = open(ffile, "r")
+            filecontent = ffile.read()
+            xml = BeautifulStoneSoup(filecontent)
+            trkstart = xml.find("trk").find("time").string
             try:
-                timepart = trkstart[0:index-1]
-                starttime = datetime.datetime.strptime(timepart, sportstracker_time_format)
+                starttime = datetime.datetime.strptime(trkstart, gpx_time_format)
             except ValueError:
-            # A user has submitted yet another Sports Tracker time format    
-                timepart = trkstart[0:index]
-                starttime = datetime.datetime.strptime(timepart, sportstracker_time_format)
-        files += [[starttime, filecontent]]
-    
-    ffiles = sorted(files, key=lambda *d: d[0]) 
-    
+                # This deals with Sports Tracker files which have a silly time format
+                index = trkstart.find('.')
+                try:
+                    timepart = trkstart[0:index-1]
+                    starttime = datetime.datetime.strptime(timepart, sportstracker_time_format)
+                except ValueError:
+                    # A user has submitted yet another Sports Tracker time format
+                    timepart = trkstart[0:index]
+                    starttime = datetime.datetime.strptime(timepart, sportstracker_time_format)
+            files += [[starttime, filecontent]]
+
+    ffiles = sorted(files, key=lambda *d: d[0])
+
     # GPX end tag is unnecessary from initial file
     joined_gpx = ffiles[0][1].split("</gpx>")[0]
     
