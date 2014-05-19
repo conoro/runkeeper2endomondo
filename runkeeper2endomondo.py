@@ -59,16 +59,28 @@ def main():
     
     # "Header" data (initial xml tag, gpx tag, metadata, etc.) is unnecessary
     # in subsequent file, therefore we remove it, along with end GPX tag.
+    fileno = 1
     for date, ffile in ffiles[1:]:
         header, content = ffile.split("<trk>")
         content = "<trk>" + content
+        combined_length = len(content) + len(joined_gpx) + 20 # closing tags
+        # Max endomondo length is 10MB, split files if larger
+        if combined_length > 10000000:
+            joined_gpx += "</gpx>"
+            output_filename = "endomondo_{0:03d}.gpx".format(fileno)
+            output_gpx = file(output_filename, "w")
+            output_gpx.write(joined_gpx)
+            output_gpx.close()
+            fileno += 1
+            # Start new file with header
+            joined_gpx = header
         joined_gpx += content.split("</gpx>")[0]
     
     # Processed all files, append end GPX tag
     joined_gpx += "</gpx>"
     
     # Write out concatenated file
-    output_filename = "endomondo.gpx"
+    output_filename = "endomondo_{0:03d}.gpx".format(fileno)
     output_gpx = file(output_filename, "w")
     output_gpx.write(joined_gpx)
     output_gpx.close()
