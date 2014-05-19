@@ -35,7 +35,6 @@ Python Windows Version for End-Users
     * The code is very rough and may show "not responding" as it grinds through larger files. It tells you what it is doing in the main window so just be a bit patient, particularly if you have an older PC.
 	* When it is done, you will now have a file called endomondo.gpx in the same directory as your other GPX files
     * I've read that Endomodo craps-out on files over 10MB, so if the endomondo.gpx file is bigger than that, you'll have to do this process in batches with sub-sets of the GPX files. As a guide, my 47 GPX files including several half marathons and a full marathon come in at 4MB.
-* The code has a few path dependencies on Windows but it should be trivial to change it to work on OS X and Linux. 
 
 Importing into Endomondo
 ------------------------

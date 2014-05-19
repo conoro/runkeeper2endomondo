@@ -21,6 +21,7 @@ from BeautifulSoup import BeautifulStoneSoup
 import datetime
 import glob
 import os.path
+import platform
 
 gpx_time_format = "%Y-%m-%dT%H:%M:%SZ"
 sportstracker_time_format = "%Y-%m-%dT%H:%M:%S"
@@ -64,10 +65,10 @@ class Runkeeper2Endomondo(QtGui.QMainWindow):
             self.textEdit.setText(fname)
             self.textEdit.repaint()
             files = list()
-            
-            gpxpath = fname + '\\*.gpx'
+            gpxpath = fname + '/*.gpx'
+            if platform.system() == "Windows":
+                gpxpath = fname + '\\*.gpx'
             all_gpx_files = glob.glob(gpxpath)
-            
             # To make sure our data files are attached in correct order; we don't trust file system (download order, ...)
             message = "Processing files, please wait\n"
             self.textEdit.setText(message)
