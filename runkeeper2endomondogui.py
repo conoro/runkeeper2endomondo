@@ -21,6 +21,7 @@ from BeautifulSoup import BeautifulStoneSoup
 import datetime
 import glob
 import os.path
+import platform
 
 gpx_time_format = "%Y-%m-%dT%H:%M:%SZ"
 sportstracker_time_format = "%Y-%m-%dT%H:%M:%S"
@@ -49,7 +50,7 @@ class Runkeeper2Endomondo(QtGui.QMainWindow):
         
         self.setGeometry(300, 300, 450, 300)
         self.setWindowTitle('RunKeeper to Endomondo Converter')
-        message = "Use the File menu to select the directory to which you have unzipped all your RunKeeper GPX files.\n\nThis tool will concatenate all those files into a file called endomondo.gpx which you can then import into Endomondo.\n\nIf the resulting endomondo.gpx file is larger than 10MB, you\'ll have to do this process in batches instead with sub-sets of the files in different directories. This is an Endomondo limitation.\n\nCopyright Conor O\'Neill, cwjoneill@gmail.com, 2013"
+        message = "Use the File menu to select the directory to which you have unzipped all your RunKeeper GPX files.\n\nThis tool will concatenate all those files into a file called endomondo.gpx which you can then import into Endomondo.\n\nEndomondo has a 10MB limit on file uploads, if your workouts results in a larger file, they will automatically be split in serveral files.\n\nCopyright Conor O\'Neill, cwjoneill@gmail.com, 2013"
         self.textEdit.setText(message)
         self.textEdit.moveCursor(QtGui.QTextCursor.End)
         self.show()
@@ -64,16 +65,16 @@ class Runkeeper2Endomondo(QtGui.QMainWindow):
             self.textEdit.setText(fname)
             self.textEdit.repaint()
             files = list()
-            
-            gpxpath = fname + '\\*.gpx'
+            gpxpath = fname + '/*.gpx'
+            if platform.system() == "Windows":
+                gpxpath = fname + '\\*.gpx'
             all_gpx_files = glob.glob(gpxpath)
-            
             # To make sure our data files are attached in correct order; we don't trust file system (download order, ...)
             message = "Processing files, please wait\n"
             self.textEdit.setText(message)
             self.textEdit.repaint()
             for ffile in all_gpx_files:
-                if ("endomondo.gpx" not in ffile):
+                if ("endomondo" not in ffile):
                     message = message + ffile + "\n"
                     self.textEdit.setText(message)
                     self.textEdit.moveCursor(QtGui.QTextCursor.End)
@@ -82,7 +83,12 @@ class Runkeeper2Endomondo(QtGui.QMainWindow):
                     ffile = open(ffile, "r")
                     filecontent = ffile.read()
                     xml = BeautifulStoneSoup(filecontent)
-                    trkstart = xml.find("trk").find("time").string
+                    tracktime = xml.find("trk")
+                    try:
+                        trkstart= tracktime.find("time").string
+                    except AttributeError:
+                        # Skip file if track is empty. i.e. manual added workout - no gps data
+                        continue
                     try:
                         starttime = datetime.datetime.strptime(trkstart, gpx_time_format)
                     except ValueError:
@@ -104,20 +110,32 @@ class Runkeeper2Endomondo(QtGui.QMainWindow):
             
             # "Header" data (initial xml tag, gpx tag, metadata, etc.) is unnecessary
             # in subsequent file, therefore we remove it, along with end GPX tag.
+            fileno = 1
             for date, ffile in ffiles[1:]:
                 header, content = ffile.split("<trk>")
                 content = "<trk>" + content
+                combined_length = len(content) + len(joined_gpx) + 20 # closing tags
+                # Max endomondo length is 10MB, split files if larger
+                if combined_length > 10000000:
+                    joined_gpx += "</gpx>"
+                    output_filename = "endomondo_{0:03d}.gpx".format(fileno)
+                    output_gpx = file(output_filename, "w")
+                    output_gpx.write(joined_gpx)
+                    output_gpx.close()
+                    fileno += 1
+                    # Start new file with header
+                    joined_gpx = header
                 joined_gpx += content.split("</gpx>")[0]
             
             # Processed all files, append end GPX tag
             joined_gpx += "</gpx>"
             
             # Write out concatenated file
-            output_filename = fname + "\\endomondo.gpx"
+            output_filename = "endomondo_{0:03d}.gpx".format(fileno)
             output_gpx = file(output_filename, "w")
             output_gpx.write(joined_gpx)
             output_gpx.close()
-            message = message + "\n\nAll Done!\nNow import endomondo.gpx into Endomondo."
+            message = message + "\n\nAll Done!\nNow import endomondo001.gpx - " + "endomondo_{0:03d}.gpx".format(fileno) + " into Endomondo."
             self.textEdit.setText(message)
             self.textEdit.moveCursor(QtGui.QTextCursor.End)
             self.textEdit.ensureCursorVisible()

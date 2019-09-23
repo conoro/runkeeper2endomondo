@@ -4,7 +4,7 @@ Bulk import RunKeeper or Sports Tracker GPX files into Endomondo
 
 Description
 -----------
-This tool takes all of the unzipped GPX files from a RunKeeper or Sports Tracker export and concatenates them into one large GPX file which can be imported into Endomondo.
+This tool takes all of the unzipped GPX files from a RunKeeper or Sports Tracker export and concatenates them into GPX files with a size of 10MB which can be imported into Endomondo.
 
 There are two versions - [1] a simple Python cli script which you run from the directory with the GPX files and [2] a simple Windows Python GUI which you can run from anywhere.
 
@@ -23,7 +23,10 @@ Exporting from RunKeeper
 Exporting from Sports Tracker
 -----------------------------
 * I don't know. Can someone give me the instructions for this.
-	
+
+There is a tool here: http://daniel.toffee.ro/2014/04/25/liberate-sportstracker-workouts that can batch export workouts from sports-tracker.com.
+
+
 Python Windows Version for End-Users
 ------------------------------------
 * You convert to Endomondo as follows:
@@ -35,7 +38,6 @@ Python Windows Version for End-Users
     * The code is very rough and may show "not responding" as it grinds through larger files. It tells you what it is doing in the main window so just be a bit patient, particularly if you have an older PC.
 	* When it is done, you will now have a file called endomondo.gpx in the same directory as your other GPX files
     * I've read that Endomodo craps-out on files over 10MB, so if the endomondo.gpx file is bigger than that, you'll have to do this process in batches with sub-sets of the GPX files. As a guide, my 47 GPX files including several half marathons and a full marathon come in at 4MB.
-* The code has a few path dependencies on Windows but it should be trivial to change it to work on OS X and Linux. 
 
 Importing into Endomondo
 ------------------------
@@ -55,9 +57,7 @@ Python CLI Version for Developers
 * Put runkeeper2endomondo.py in the same directory as the GPX files
 * Open a command prompt
 * python runkeeper2endomondo.py
-* It outputs endomondo.gpx in the same directory
-* It lacks even basic checks so make sure to remove endomondo.gpx from the directory before running again. The GUI version has some better checks.
-
+* It outputs endomondo_xxx.gpx in the same directory˛
 
 Python Windows Version for Developers
 ------------------------------------
@@ -86,3 +86,8 @@ Tiny change to work with the Sports Tracker timestamp format. Seems to work on s
 ----------
 Another simple change to work with a variation of the Sports Tracker timestamp format.
 
+2014/05/19
+----------
+Export to several files if size exceeds 10MB.
+Handles manual created (empty) workouts from Sports Tracker
+Tested on 397 workouts exported from Sports Tracker
